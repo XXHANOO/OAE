@@ -1,0 +1,27 @@
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.venv/
+venv/
+
+# Local databases
+*.duckdb
+*.duckdb.wal
+
+# Local market and derived data
+data/raw/*
+!data/raw/.gitkeep
+data/normalized/*
+!data/normalized/.gitkeep
+data/derived/*
+!data/derived/.gitkeep
