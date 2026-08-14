@@ -8,4 +8,5 @@
 | S1.04 | COMPLETE | d4467ca704d8fc59db70da36bdec47600e48f5e0 | S1.04_frozen_config.md | APPROVED |
 | S1.05 | COMPLETE | f0b0465baf5fde2ba5ee01a09684ad2a09c45ce4 | S1.05_config_hash.md | APPROVED |
 | S1.06 | COMPLETE | 2ccfa7206d05d4a0c3ff225b2bae27be2e0ddd97 | S1.06_domain_enums.md | APPROVED |
-| S1.07 | COMPLETE | 0de2e99a89ab100c6d5309e76aa4e169b11a88e2 | S1.07_duckdb_connection.md | PENDING |
+| S1.07 | COMPLETE | 0de2e99a89ab100c6d5309e76aa4e169b11a88e2 | S1.07_duckdb_connection.md | APPROVED |
+| S1.08 | COMPLETE | bdaa1b42c471bbae2ce13da445dc25b35ac56c94 | S1.08_core_sql.md | PENDING |
