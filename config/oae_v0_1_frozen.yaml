@@ -1,0 +1,68 @@
+version: OAE-v0.1.0
+
+timezone: America/New_York
+
+decision_time: "13:30:00"
+
+instrument:
+  signal_underlying: SPX
+  trade_underlying: XSP
+  multiplier: 100
+  settlement: PM
+
+model:
+  train_window: 756
+  min_train: 504
+  k: 80
+  bandwidth_neighbor: 40
+  recency_half_life: 252
+  min_neff: 30
+  feature_clip: 5.0
+
+health:
+  window: 126
+  min_distribution_skill: 0.02
+
+ood:
+  percentile: 0.995
+
+strategy:
+  allowed:
+    - BULL_CALL_DEBIT
+    - BEAR_PUT_DEBIT
+  spread_width: 1.0
+  max_trades_per_day: 1
+  hold_to_settlement: true
+
+candidate:
+  max_moneyness_distance: 0.005
+
+quotes:
+  max_age_seconds: 2.0
+  min_bid_size: 1
+  min_ask_size: 1
+
+execution:
+  tick_size: 0.01
+  min_debit: 0.15
+  max_debit: 0.75
+  max_absolute_friction: 0.05
+  max_relative_friction: 0.25
+  model: CONSERVATIVE_NATURAL_ONE_LOT
+
+fees:
+  conservative_floor_usd: 3.00
+
+edge:
+  min_ev_usd: 5.00
+  min_ev_over_max_loss: 0.10
+  min_lcb_usd_exclusive: 0.00
+  min_lcb_over_max_loss: 0.02
+  min_probability_profit: 0.40
+
+bootstrap:
+  draws: 1000
+  base_seed: 20260813
+
+ambiguity:
+  max_score_difference: 0.01
