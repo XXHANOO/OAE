@@ -8,8 +8,9 @@ Before any work, read and follow:
 2. `docs/specs/01_OAE_v0.1_DATA_BACKTEST_SPEC.md`
 3. `docs/specs/02_OAE_v0.1_IMPLEMENTATION_SPEC.md`
 4. `docs/specs/03_OAE_v0.1_IMPLEMENTATION_ERRATA.md`
-5. `docs/CHANGE_CONTROL.md`
-6. `docs/specs/SPEC_MANIFEST.sha256`
+5. `docs/specs/04_OAE_v0.1_PERSISTENCE_ERRATA.md`
+6. `docs/CHANGE_CONTROL.md`
+7. `docs/specs/SPEC_MANIFEST.sha256`
 
 Verify the specification manifest before implementation. The authoritative
 specification identity is the manifest file plus the SHA-256 of the manifest
@@ -74,9 +75,11 @@ these sections:
 - Frozen Math Spec SHA256
 - Data/Backtest Spec SHA256
 - Implementation Spec SHA256
+- Implementation Errata SHA256
+- Persistence Errata SHA256
 - CHANGE_CONTROL SHA256
 - SPEC_MANIFEST SHA256
-- Config SHA256 when available
+- Normalized config SHA256 when applicable
 
 ### 4. Git Baseline
 

@@ -4,8 +4,10 @@
 
 This document controls changes to the frozen OAE v0.1 baseline, records the
 governance-only amendments approved for S1.02, and recognizes the narrow
-implementation-consistency errata approved for S1.03B. It does not modify any
-financial, model, market-data, execution, or backtest semantic.
+implementation-consistency errata approved for S1.03B and the narrow
+persistence-contract errata approved for S1.08A. It does not modify any
+financial, model, market-data, point-in-time, execution, trading, or backtest
+semantic.
 
 ## Authority hierarchy
 
@@ -17,10 +19,13 @@ financial, model, market-data, execution, or backtest semantic.
    assumptions, historical replay, and anti-leakage rules.
 3. `docs/specs/03_OAE_v0.1_IMPLEMENTATION_ERRATA.md` has narrow authority only
    over the explicit implementation inconsistencies enumerated in that errata.
-4. `docs/specs/02_OAE_v0.1_IMPLEMENTATION_SPEC.md` governs all implementation
+4. `docs/specs/04_OAE_v0.1_PERSISTENCE_ERRATA.md` has narrow authority only
+   over the explicit persistence representation inconsistencies enumerated in
+   that errata.
+5. `docs/specs/02_OAE_v0.1_IMPLEMENTATION_SPEC.md` governs all implementation
    architecture not superseded by an explicit erratum and preserves the
    original development baseline.
-5. `AGENTS.md` and this file may amend development governance only. They may
+6. `AGENTS.md` and this file may amend development governance only. They may
    not change a frozen model, data, trading, execution, or backtest semantic.
 
 If two authorities conflict on a frozen semantic, implementation must stop and
@@ -106,6 +111,30 @@ specification always overrides another.
 Any unlisted conflict requires implementation to stop and escalate to Human +
 ChatGPT. An Agent must not infer a precedence rule from the S1.03B repair.
 
+## S1.08A persistence errata and precedence
+
+The S1.08A Persistence Contract Errata is a second narrow OAE v0.1 consistency
+repair approved by Human + ChatGPT. It does not constitute OAE v0.2 because it
+changes no frozen mathematical, feature, model, market-data, point-in-time,
+timestamp, trading, execution, fee, risk, health, OOD, No-Trade, acceptance,
+or walk-forward semantic.
+
+Its authority is limited to the persistence representation discrepancies it
+explicitly enumerates, including physical schema and stage ownership, table
+and field names, missing persistence fields, SQL types, nullability, primary
+keys, and representation aliases.
+
+The Data/Backtest Specification retains authority over already-frozen data,
+point-in-time, execution, and backtest semantics. The original Implementation
+Specification remains authoritative for architecture not explicitly
+superseded by the S1.03B or S1.08A errata. Neither erratum creates a general
+precedence rule between the Data/Backtest and Implementation Specifications.
+
+No conflict between the S1.03B Implementation Errata and S1.08A Persistence
+Contract Errata is intended. Any unlisted conflict, or any discovered conflict
+between the two errata, requires implementation to stop and escalate to Human +
+ChatGPT.
+
 ## Specification identity
 
 `docs/specs/SPEC_MANIFEST.sha256` contains actual-byte SHA-256 values for
@@ -115,11 +144,12 @@ exactly:
 - `docs/specs/01_OAE_v0.1_DATA_BACKTEST_SPEC.md`
 - `docs/specs/02_OAE_v0.1_IMPLEMENTATION_SPEC.md`
 - `docs/specs/03_OAE_v0.1_IMPLEMENTATION_ERRATA.md`
+- `docs/specs/04_OAE_v0.1_PERSISTENCE_ERRATA.md`
 - `docs/CHANGE_CONTROL.md`
 
-Every future stage report must record each of these hashes and the SHA-256 of
-the manifest itself. The frozen config SHA-256 must also be recorded once that
-config exists.
+Every future stage report must record all six canonical file hashes and the
+SHA-256 of the manifest itself. The normalized frozen config SHA-256 must also
+be recorded when applicable.
 
 Changing a frozen specification requires the applicable version-control rule.
 An approved governance-only edit to this file or `AGENTS.md` must be explicit,
