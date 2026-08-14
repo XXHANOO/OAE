@@ -2,9 +2,10 @@
 
 ## Purpose
 
-This document controls changes to the frozen OAE v0.1 baseline and records the
-governance-only amendments approved for S1.02. It does not modify any financial,
-model, market-data, execution, or backtest semantic.
+This document controls changes to the frozen OAE v0.1 baseline, records the
+governance-only amendments approved for S1.02, and recognizes the narrow
+implementation-consistency errata approved for S1.03B. It does not modify any
+financial, model, market-data, execution, or backtest semantic.
 
 ## Authority hierarchy
 
@@ -14,9 +15,12 @@ model, market-data, execution, or backtest semantic.
 2. `docs/specs/01_OAE_v0.1_DATA_BACKTEST_SPEC.md` governs market-data
    definitions, timestamp semantics, point-in-time rules, execution
    assumptions, historical replay, and anti-leakage rules.
-3. `docs/specs/02_OAE_v0.1_IMPLEMENTATION_SPEC.md` governs implementation
-   architecture and preserves the original development baseline.
-4. `AGENTS.md` and this file may amend development governance only. They may
+3. `docs/specs/03_OAE_v0.1_IMPLEMENTATION_ERRATA.md` has narrow authority only
+   over the explicit implementation inconsistencies enumerated in that errata.
+4. `docs/specs/02_OAE_v0.1_IMPLEMENTATION_SPEC.md` governs all implementation
+   architecture not superseded by an explicit erratum and preserves the
+   original development baseline.
+5. `AGENTS.md` and this file may amend development governance only. They may
    not change a frozen model, data, trading, execution, or backtest semantic.
 
 If two authorities conflict on a frozen semantic, implementation must stop and
@@ -79,6 +83,29 @@ semantics, timestamps, execution assumptions, risk gates, or backtest rules.
 The original canonical specification documents remain preserved verbatim so
 the historical baseline remains auditable.
 
+## S1.03B implementation errata and precedence
+
+The S1.03B Implementation Errata is a v0.1 consistency repair approved by
+Human + ChatGPT. It does not constitute OAE v0.2 because it changes no frozen
+financial, model, market-data, execution, timestamp, trading, or backtest
+semantic.
+
+Its authority is limited to the exact discrepancies it enumerates:
+
+- complete implementation structure for the already-frozen configuration in
+  Data/Backtest Specification section 76;
+- the explicitly listed raw/core market-data fields omitted from examples in
+  Implementation Specification sections 10 and 28.
+
+The Data/Backtest Specification retains authority over the already-frozen
+market-data and backtest semantics. The Implementation Specification remains
+authoritative for implementation architecture wherever the errata does not
+explicitly supersede it. The errata creates no broad rule that one
+specification always overrides another.
+
+Any unlisted conflict requires implementation to stop and escalate to Human +
+ChatGPT. An Agent must not infer a precedence rule from the S1.03B repair.
+
 ## Specification identity
 
 `docs/specs/SPEC_MANIFEST.sha256` contains actual-byte SHA-256 values for
@@ -87,6 +114,7 @@ exactly:
 - `docs/specs/00_OAE_v0.1_FROZEN_MATH_SPEC.md`
 - `docs/specs/01_OAE_v0.1_DATA_BACKTEST_SPEC.md`
 - `docs/specs/02_OAE_v0.1_IMPLEMENTATION_SPEC.md`
+- `docs/specs/03_OAE_v0.1_IMPLEMENTATION_ERRATA.md`
 - `docs/CHANGE_CONTROL.md`
 
 Every future stage report must record each of these hashes and the SHA-256 of
