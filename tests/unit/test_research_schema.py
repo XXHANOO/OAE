@@ -402,11 +402,11 @@ def test_forecast_neighbors_full_weight_contract(
             ("neighbor_session_date", "DATE", False),
             ("distance", "DOUBLE", False),
             ("terminal_return", "DOUBLE", False),
-            ("age_sessions", "INTEGER", False),
-            ("normalized_weight", "DOUBLE", False),
             ("similarity_weight_raw", "DOUBLE", False),
             ("recency_weight", "DOUBLE", False),
             ("combined_weight_raw", "DOUBLE", False),
+            ("normalized_weight", "DOUBLE", False),
+            ("age_sessions", "INTEGER", False),
         ],
     )
     assert _primary_key_columns(

@@ -88,12 +88,11 @@ CREATE TABLE research.forecast_neighbors (
     neighbor_session_date DATE NOT NULL,
     distance DOUBLE NOT NULL,
     terminal_return DOUBLE NOT NULL,
-    age_sessions INTEGER NOT NULL,
-    normalized_weight DOUBLE NOT NULL,
-
     similarity_weight_raw DOUBLE NOT NULL,
     recency_weight DOUBLE NOT NULL,
     combined_weight_raw DOUBLE NOT NULL,
+    normalized_weight DOUBLE NOT NULL,
+    age_sessions INTEGER NOT NULL,
 
     PRIMARY KEY(forecast_id, neighbor_rank)
 );
