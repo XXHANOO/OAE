@@ -166,6 +166,77 @@ def _insert_nbbo(
     )
 
 
+def _insert_macro_event(
+    connection: duckdb.DuckDBPyConnection,
+    event_id: str,
+    event_type: str,
+) -> None:
+    connection.execute(
+        """
+        INSERT INTO core.macro_events (
+            event_id,
+            event_date_et,
+            event_start_ts_utc,
+            event_end_ts_utc,
+            event_type,
+            event_name,
+            source,
+            verified
+        ) VALUES (
+            ?, DATE '2026-08-14',
+            TIMESTAMPTZ '2026-08-14 17:30:00+00',
+            TIMESTAMPTZ '2026-08-14 20:00:00+00',
+            ?, 'TEST EVENT', 'TEST', false
+        )
+        """,
+        [event_id, event_type],
+    )
+
+
+def _insert_decision_snapshot(
+    connection: duckdb.DuckDBPyConnection,
+    *,
+    contract_id: str,
+    quote_age_ms: int = 1000,
+    bid_px: float = 1.00,
+    ask_px: float = 1.10,
+    bid_size: int = 1,
+    ask_size: int = 1,
+    quote_valid: bool = True,
+) -> None:
+    connection.execute(
+        """
+        INSERT INTO core.decision_option_snapshots (
+            session_date_et,
+            decision_ts_utc,
+            contract_id,
+            quote_ts_utc,
+            quote_age_ms,
+            bid_px,
+            ask_px,
+            bid_size,
+            ask_size,
+            quote_valid,
+            source_quote_id
+        ) VALUES (
+            DATE '2026-08-14',
+            TIMESTAMPTZ '2026-08-14 17:30:00+00',
+            ?, TIMESTAMPTZ '2026-08-14 17:29:59+00',
+            ?, ?, ?, ?, ?, ?, 'source-quote'
+        )
+        """,
+        [
+            contract_id,
+            quote_age_ms,
+            bid_px,
+            ask_px,
+            bid_size,
+            ask_size,
+            quote_valid,
+        ],
+    )
+
+
 def test_migration_executes_successfully(
     migrated_connection: duckdb.DuckDBPyConnection,
 ) -> None:
@@ -201,7 +272,11 @@ def test_exact_application_table_set(
     ).fetchall()
 
     assert tables == [
+        ("core", "decision_option_snapshots"),
+        ("core", "fee_schedules"),
         ("core", "index_bars_1m"),
+        ("core", "index_sessions"),
+        ("core", "macro_events"),
         ("core", "option_contracts"),
         ("core", "option_nbbo"),
         ("core", "option_settlements"),
@@ -487,19 +562,197 @@ def test_nullable_errata_boundaries(
     ).fetchone() == (True,)
 
 
-def test_no_research_audit_or_derived_tables(
+def test_index_sessions_contract(
+    migrated_connection: duckdb.DuckDBPyConnection,
+) -> None:
+    _assert_column_contract(
+        migrated_connection,
+        "core",
+        "index_sessions",
+        [
+            ("session_date_et", "DATE", False),
+            ("spx_official_prev_close", "DECIMAL(18,6)", False),
+            ("spx_open", "DECIMAL(18,6)", False),
+            ("spx_decision_px", "DECIMAL(18,6)", False),
+            ("intraday_high_to_t0", "DECIMAL(18,6)", False),
+            ("intraday_low_to_t0", "DECIMAL(18,6)", False),
+            ("is_full_session", "BOOLEAN", False),
+            ("session_open_ts_utc", "TIMESTAMP WITH TIME ZONE", False),
+            ("session_close_ts_utc", "TIMESTAMP WITH TIME ZONE", False),
+        ],
+    )
+    assert _primary_key_columns(
+        migrated_connection, "core", "index_sessions"
+    ) == ["session_date_et"]
+
+
+def test_macro_events_contract_and_event_type_check(
+    migrated_connection: duckdb.DuckDBPyConnection,
+) -> None:
+    _assert_column_contract(
+        migrated_connection,
+        "core",
+        "macro_events",
+        [
+            ("event_id", "VARCHAR", False),
+            ("event_date_et", "DATE", False),
+            ("event_start_ts_utc", "TIMESTAMP WITH TIME ZONE", False),
+            ("event_end_ts_utc", "TIMESTAMP WITH TIME ZONE", False),
+            ("event_type", "VARCHAR", False),
+            ("event_name", "VARCHAR", False),
+            ("source", "VARCHAR", False),
+            ("verified", "BOOLEAN", False),
+        ],
+    )
+    assert _primary_key_columns(
+        migrated_connection, "core", "macro_events"
+    ) == ["event_id"]
+
+    _insert_macro_event(
+        migrated_connection, "valid-decision", "FOMC_DECISION"
+    )
+    _insert_macro_event(
+        migrated_connection,
+        "valid-press-conference",
+        "FOMC_PRESS_CONFERENCE",
+    )
+    with pytest.raises(duckdb.ConstraintException):
+        _insert_macro_event(
+            migrated_connection, "invalid-event", "CPI_RELEASE"
+        )
+
+
+def test_fee_schedules_contract_and_nullable_effective_to(
+    migrated_connection: duckdb.DuckDBPyConnection,
+) -> None:
+    _assert_column_contract(
+        migrated_connection,
+        "core",
+        "fee_schedules",
+        [
+            ("effective_from", "DATE", False),
+            ("effective_to", "DATE", True),
+            ("broker", "VARCHAR", False),
+            ("product", "VARCHAR", False),
+            ("per_contract_fee", "DECIMAL(18,6)", False),
+            ("exchange_fee", "DECIMAL(18,6)", False),
+            ("regulatory_fee", "DECIMAL(18,6)", False),
+            ("settlement_fee", "DECIMAL(18,6)", False),
+            ("source", "VARCHAR", False),
+        ],
+    )
+    assert _primary_key_columns(
+        migrated_connection, "core", "fee_schedules"
+    ) == []
+
+    migrated_connection.execute(
+        """
+        INSERT INTO core.fee_schedules (
+            effective_from,
+            effective_to,
+            broker,
+            product,
+            per_contract_fee,
+            exchange_fee,
+            regulatory_fee,
+            settlement_fee,
+            source
+        ) VALUES (
+            DATE '2026-08-14', NULL, 'TEST BROKER', 'XSP',
+            0.650000, 0.100000, 0.020000, 0.030000, 'TEST'
+        )
+        """
+    )
+    assert migrated_connection.execute(
+        """
+        SELECT effective_to IS NULL
+        FROM core.fee_schedules
+        WHERE broker = 'TEST BROKER'
+        """
+    ).fetchone() == (True,)
+
+
+def test_decision_option_snapshots_contract(
+    migrated_connection: duckdb.DuckDBPyConnection,
+) -> None:
+    _assert_column_contract(
+        migrated_connection,
+        "core",
+        "decision_option_snapshots",
+        [
+            ("session_date_et", "DATE", False),
+            ("decision_ts_utc", "TIMESTAMP WITH TIME ZONE", False),
+            ("contract_id", "VARCHAR", False),
+            ("quote_ts_utc", "TIMESTAMP WITH TIME ZONE", False),
+            ("quote_age_ms", "BIGINT", False),
+            ("bid_px", "DECIMAL(18,6)", False),
+            ("ask_px", "DECIMAL(18,6)", False),
+            ("bid_size", "INTEGER", False),
+            ("ask_size", "INTEGER", False),
+            ("quote_valid", "BOOLEAN", False),
+            ("source_quote_id", "VARCHAR", False),
+        ],
+    )
+    assert _primary_key_columns(
+        migrated_connection, "core", "decision_option_snapshots"
+    ) == ["session_date_et", "contract_id"]
+
+
+def test_invalid_decision_snapshot_remains_storable(
+    migrated_connection: duckdb.DuckDBPyConnection,
+) -> None:
+    _insert_decision_snapshot(
+        migrated_connection,
+        contract_id="invalid-snapshot",
+        quote_age_ms=2001,
+        bid_px=2.00,
+        ask_px=1.00,
+        bid_size=0,
+        ask_size=0,
+        quote_valid=False,
+    )
+
+    assert migrated_connection.execute(
+        """
+        SELECT quote_valid, bid_px, ask_px, bid_size, ask_size, quote_age_ms
+        FROM core.decision_option_snapshots
+        WHERE contract_id = 'invalid-snapshot'
+        """
+    ).fetchone() == (False, 2.000000, 1.000000, 0, 0, 2001)
+
+
+def test_decision_snapshot_primary_key_enforced(
+    migrated_connection: duckdb.DuckDBPyConnection,
+) -> None:
+    _insert_decision_snapshot(
+        migrated_connection,
+        contract_id="duplicate-snapshot",
+    )
+    with pytest.raises(duckdb.ConstraintException):
+        _insert_decision_snapshot(
+            migrated_connection,
+            contract_id="duplicate-snapshot",
+        )
+
+
+def test_no_research_or_audit_tables(
     migrated_connection: duckdb.DuckDBPyConnection,
 ) -> None:
     forbidden_tables = {
         "feature_snapshots",
         "model_samples",
+        "model_scaler_snapshots",
         "forecast_runs",
         "forecast_scenarios",
         "forecast_neighbors",
+        "forecast_evaluations",
         "option_candidates",
         "daily_decisions",
+        "simulated_orders",
+        "simulated_fills",
         "trade_results",
         "backtest_runs",
+        "backtest_metrics",
     }
     schemas = {
         schema_name

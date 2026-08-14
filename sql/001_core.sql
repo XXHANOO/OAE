@@ -88,3 +88,55 @@ CREATE TABLE core.option_settlements (
 
     PRIMARY KEY(product, expiration_date, settlement_style)
 );
+
+CREATE TABLE core.index_sessions (
+    session_date_et DATE PRIMARY KEY,
+    spx_official_prev_close DECIMAL(18,6) NOT NULL,
+    spx_open DECIMAL(18,6) NOT NULL,
+    spx_decision_px DECIMAL(18,6) NOT NULL,
+    intraday_high_to_t0 DECIMAL(18,6) NOT NULL,
+    intraday_low_to_t0 DECIMAL(18,6) NOT NULL,
+    is_full_session BOOLEAN NOT NULL,
+    session_open_ts_utc TIMESTAMPTZ NOT NULL,
+    session_close_ts_utc TIMESTAMPTZ NOT NULL
+);
+
+CREATE TABLE core.macro_events (
+    event_id VARCHAR PRIMARY KEY,
+    event_date_et DATE NOT NULL,
+    event_start_ts_utc TIMESTAMPTZ NOT NULL,
+    event_end_ts_utc TIMESTAMPTZ NOT NULL,
+    event_type VARCHAR NOT NULL
+        CHECK(event_type IN ('FOMC_DECISION','FOMC_PRESS_CONFERENCE')),
+    event_name VARCHAR NOT NULL,
+    source VARCHAR NOT NULL,
+    verified BOOLEAN NOT NULL
+);
+
+CREATE TABLE core.fee_schedules (
+    effective_from DATE NOT NULL,
+    effective_to DATE,
+    broker VARCHAR NOT NULL,
+    product VARCHAR NOT NULL,
+    per_contract_fee DECIMAL(18,6) NOT NULL,
+    exchange_fee DECIMAL(18,6) NOT NULL,
+    regulatory_fee DECIMAL(18,6) NOT NULL,
+    settlement_fee DECIMAL(18,6) NOT NULL,
+    source VARCHAR NOT NULL
+);
+
+CREATE TABLE core.decision_option_snapshots (
+    session_date_et DATE NOT NULL,
+    decision_ts_utc TIMESTAMPTZ NOT NULL,
+    contract_id VARCHAR NOT NULL,
+    quote_ts_utc TIMESTAMPTZ NOT NULL,
+    quote_age_ms BIGINT NOT NULL,
+    bid_px DECIMAL(18,6) NOT NULL,
+    ask_px DECIMAL(18,6) NOT NULL,
+    bid_size INTEGER NOT NULL,
+    ask_size INTEGER NOT NULL,
+    quote_valid BOOLEAN NOT NULL,
+    source_quote_id VARCHAR NOT NULL,
+
+    PRIMARY KEY(session_date_et, contract_id)
+);
