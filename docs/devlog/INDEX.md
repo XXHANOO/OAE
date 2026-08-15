@@ -17,3 +17,4 @@
 | S1.10 | COMPLETE | 408cc409ae980d4ccdcc0cf9953dbba34307b76d | S1.10_reconciled_audit_sql.md | APPROVED |
 | S1.11 | COMPLETE | 67f12472b58ac98ced06ccf84f74de78f5164742 | S1.11_timestamp_dst.md | APPROVED |
 | S1.12 | COMPLETE | 5151aaf8ec10509d82d812b28d1564a8562affc1 | S1.12_sprint1_closure.md | APPROVED |
+| S2.00A | COMPLETE | a334d0c51673c5acfdf9c35059ca818f57533b42 | S2.00A_raw_provenance.md | PENDING |
