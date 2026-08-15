@@ -16,4 +16,4 @@
 | S1.09A | COMPLETE | 9233ecaeb14b2685650658bf91dc7376d86ddc26 | S1.09A_forecast_neighbor_order.md | APPROVED |
 | S1.10 | COMPLETE | 408cc409ae980d4ccdcc0cf9953dbba34307b76d | S1.10_reconciled_audit_sql.md | APPROVED |
 | S1.11 | COMPLETE | 67f12472b58ac98ced06ccf84f74de78f5164742 | S1.11_timestamp_dst.md | APPROVED |
-| S1.12 | COMPLETE | 5151aaf8ec10509d82d812b28d1564a8562affc1 | S1.12_sprint1_closure.md | PENDING |
+| S1.12 | COMPLETE | 5151aaf8ec10509d82d812b28d1564a8562affc1 | S1.12_sprint1_closure.md | APPROVED |
