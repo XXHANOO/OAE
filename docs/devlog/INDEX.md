@@ -13,4 +13,5 @@
 | S1.08A | COMPLETE | 5a8717dbc459a8ac4774f47ce806a6323552d07e | S1.08A_persistence_errata.md | APPROVED |
 | S1.08B | COMPLETE | 74b32633e8ebbc6c5e1a674e7b4f843fa62f8b0d | S1.08B_complete_core_persistence.md | APPROVED |
 | S1.09 | COMPLETE | 1f6309d60c25ddbe1e4f483a87cf8ca808e259e9 | S1.09_reconciled_research_sql.md | REJECTED |
-| S1.09A | COMPLETE | 9233ecaeb14b2685650658bf91dc7376d86ddc26 | S1.09A_forecast_neighbor_order.md | PENDING |
+| S1.09A | COMPLETE | 9233ecaeb14b2685650658bf91dc7376d86ddc26 | S1.09A_forecast_neighbor_order.md | APPROVED |
+| S1.10 | COMPLETE | 408cc409ae980d4ccdcc0cf9953dbba34307b76d | S1.10_reconciled_audit_sql.md | PENDING |
