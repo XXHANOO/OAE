@@ -153,25 +153,65 @@ def test_asof_select_024_to_026_exact_duplicate_maximum_is_accepted() -> None:
 
 
 @pytest.mark.parametrize(
-    "overrides",
+    ("expected_field", "overrides"),
     [
-        {"bid_px": Decimal("1.01")},
-        {"ask_px": Decimal("1.11")},
-        {"bid_size": 2},
-        {"sequence_no": 101},
-        {"raw_file_id": "raw-file-b"},
-        {"quote_condition": "HALT"},
+        ("bid_px", {"bid_px": Decimal("1.01")}),
+        ("ask_px", {"ask_px": Decimal("1.11")}),
+        ("bid_size", {"bid_size": 2}),
+        ("sequence_no", {"sequence_no": 101}),
+        ("raw_file_id", {"raw_file_id": "raw-file-b"}),
+        ("quote_condition", {"quote_condition": "HALT"}),
     ],
 )
-def test_asof_select_027_to_036_distinct_maximum_records_fail(
+def test_asof_same_max_field_differences_fail_independently(
+    expected_field: str,
     overrides: dict[str, object]
 ) -> None:
     first = _quote(quote_ts_utc=DECISION, sequence_no=100)
-    second = _quote(quote_ts_utc=DECISION, **overrides)
+    second_values = {"quote_ts_utc": DECISION, "sequence_no": 100}
+    second_values.update(overrides)
+    second = _quote(**second_values)
+    first_payload = first.model_dump(mode="python")
+    second_payload = second.model_dump(mode="python")
+    difference_keys = {
+        key
+        for key in first_payload
+        if first_payload[key] != second_payload[key]
+    }
+    assert difference_keys == {expected_field}
     with pytest.raises(AsOfSelectionIntegrityError, match="distinct quotes"):
         select_asof_quote([first, second], DECISION)
     with pytest.raises(AsOfSelectionIntegrityError, match="distinct quotes"):
         select_asof_quote([second, first], DECISION)
+
+
+def test_asof_quality_does_not_resolve_same_max_ambiguity() -> None:
+    valid_quote = _quote(quote_ts_utc=DECISION, sequence_no=100)
+    locked_quote = _quote(
+        quote_ts_utc=DECISION,
+        sequence_no=100,
+        ask_px=Decimal("1.00"),
+    )
+    valid_payload = valid_quote.model_dump(mode="python")
+    locked_payload = locked_quote.model_dump(mode="python")
+    difference_keys = {
+        key
+        for key in valid_payload
+        if valid_payload[key] != locked_payload[key]
+    }
+    assert difference_keys == {"ask_px"}
+    assert (
+        asof.classify_quote_quality(valid_quote, DECISION, 2.0)
+        is QualityStatus.VALID
+    )
+    assert (
+        asof.classify_quote_quality(locked_quote, DECISION, 2.0)
+        is QualityStatus.LOCKED
+    )
+    with pytest.raises(AsOfSelectionIntegrityError, match="distinct quotes"):
+        select_asof_quote([valid_quote, locked_quote], DECISION)
+    with pytest.raises(AsOfSelectionIntegrityError, match="distinct quotes"):
+        select_asof_quote([locked_quote, valid_quote], DECISION)
 
 
 def test_asof_select_037_older_ambiguity_does_not_block_later_unique_quote() -> None:
