@@ -25,4 +25,5 @@
 | S2.03B | COMPLETE | 1be2d3da57ba700881db8a62a06de986af6858fa | S2.03B_normalization_lineage_guardrails.md | APPROVED |
 | S2.04 | COMPLETE | fb6bc6fa1111e33b0a805f845b2bdf6eeb87bcf1 | S2.04_quote_quality_classification.md | APPROVED |
 | S2.05 | COMPLETE | 61a8ebb5b5eaa57890464fdd142776963881fa8d | S2.05_strict_backward_asof_selection.md | REJECTED |
-| S2.05R | COMPLETE | 495010a2d844d0d2ced2c644028f1775ed49ff3b | S2.05R_asof_ambiguity_test_coverage_repair.md | PENDING |
+| S2.05R | COMPLETE | 495010a2d844d0d2ced2c644028f1775ed49ff3b | S2.05R_asof_ambiguity_test_coverage_repair.md | APPROVED |
+| S2.05A | COMPLETE | 8cde56acc577e65e8d16f57f59368f8e94668863 | S2.05A_decision_option_snapshot_builder.md | PENDING |
