@@ -253,3 +253,64 @@ def test_cal_074_to_084_composition_and_scope() -> None:
         clean.calendar_gate_pass = False  # type: ignore[misc]
     assert clean.session is session
     assert not any(name in SessionCalendarGate.__annotations__ for name in ("no_trade_reason", "decision_type", "feature_valid", "label_valid", "model_valid", "xsp_available"))
+
+
+def test_s206r_cal_009_equal_open_and_close_rejected() -> None:
+    same = datetime(2026, 7, 15, 13, 30, tzinfo=UTC)
+
+    with pytest.raises(ValidationError):
+        _session(open_ts_utc=same, regular_close_ts_utc=same)
+
+
+def test_s206r_cal_038_decreasing_session_sequence_rejected() -> None:
+    earlier = _session(session_date_et=date(2026, 7, 14), session_seq=100)
+    later = _session(session_date_et=date(2026, 7, 15), session_seq=99)
+
+    with pytest.raises(CalendarIntegrityError):
+        validate_trading_session_sequence([earlier, later])
+
+
+def test_s206r_cal_056_any_overlapping_event_blocks() -> None:
+    non_overlapping = _event(
+        event_id="before-window",
+        event_start_ts_utc=datetime(2026, 7, 15, 12, 0, tzinfo=ET),
+        event_end_ts_utc=datetime(2026, 7, 15, 13, 0, tzinfo=ET),
+    )
+    overlapping = _event(
+        event_id="inside-window",
+        event_start_ts_utc=datetime(2026, 7, 15, 14, 0, tzinfo=ET),
+        event_end_ts_utc=datetime(2026, 7, 15, 14, 1, tzinfo=ET),
+    )
+    session = _session()
+
+    assert build_session_calendar_gate(
+        session, [non_overlapping, overlapping]
+    ).fomc_afternoon_blocked is True
+    assert build_session_calendar_gate(
+        session, [overlapping, non_overlapping]
+    ).fomc_afternoon_blocked is True
+
+
+def test_s206r_cal_070_unverified_other_date_event_is_irrelevant() -> None:
+    other_date_unverified = _event(
+        event_date_et=date(2026, 7, 16),
+        verified=False,
+    )
+
+    gate = build_session_calendar_gate(_session(), [other_date_unverified])
+
+    assert gate.fomc_afternoon_blocked is False
+    assert gate.calendar_gate_pass is True
+
+
+def test_s206r_cal_079_session_calendar_gate_uses_slots() -> None:
+    gate = build_session_calendar_gate(_session(), [])
+
+    assert hasattr(gate, "__dict__") is False
+    assert SessionCalendarGate.__slots__ == (
+        "session",
+        "decision_ts_utc",
+        "full_session_eligible",
+        "fomc_afternoon_blocked",
+        "calendar_gate_pass",
+    )
