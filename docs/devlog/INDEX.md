@@ -22,4 +22,5 @@
 | S2.02 | COMPLETE | 94b8f9884b1e479fcf05ddadb17913a09a488993 | S2.02_option_contract_record.md | APPROVED |
 | S2.03 | COMPLETE | f809ff44e0da4d869fcb3fc514713318d659a92b | S2.03_option_quote_record.md | APPROVED |
 | S2.03A | COMPLETE | a3a3fe150e7ed26b496bf0e6c19177e2e5eb5648 | S2.03A_provider_neutral_adapter_contract.md | APPROVED |
-| S2.03B | COMPLETE | 1be2d3da57ba700881db8a62a06de986af6858fa | S2.03B_normalization_lineage_guardrails.md | PENDING |
+| S2.03B | COMPLETE | 1be2d3da57ba700881db8a62a06de986af6858fa | S2.03B_normalization_lineage_guardrails.md | APPROVED |
+| S2.04 | COMPLETE | fb6bc6fa1111e33b0a805f845b2bdf6eeb87bcf1 | S2.04_quote_quality_classification.md | PENDING |
