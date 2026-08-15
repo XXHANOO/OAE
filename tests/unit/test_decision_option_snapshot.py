@@ -198,7 +198,18 @@ def test_dos_042_missing_does_not_call_classifier(monkeypatch: pytest.MonkeyPatc
         raise AssertionError("MISSING snapshots must not classify a quote")
 
     monkeypatch.setattr(snapshots, "classify_quote_quality", fail)
-    assert build_decision_option_snapshot(_contract(), [], DECISION).quality_status is QualityStatus.MISSING
+    contract = _contract()
+    future_quote = _quote(
+        quote_ts_utc=DECISION + timedelta(microseconds=1),
+    )
+    assert future_quote.source == contract.source
+    assert future_quote.contract_id == contract.contract_id
+    for quotes in ([], [future_quote]):
+        snapshot = build_decision_option_snapshot(contract, quotes, DECISION)
+        assert snapshot.contract is contract
+        assert snapshot.selected_quote is None
+        assert snapshot.quote_age_seconds is None
+        assert snapshot.quality_status is QualityStatus.MISSING
 
 
 def test_dos_043_non_missing_delegates_frozen_two_second_threshold(
