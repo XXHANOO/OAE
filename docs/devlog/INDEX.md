@@ -20,4 +20,5 @@
 | S2.00A | COMPLETE | a334d0c51673c5acfdf9c35059ca818f57533b42 | S2.00A_raw_provenance.md | APPROVED |
 | S2.01 | COMPLETE | 5e2c4a8ae024c7b1f6e309d6a905b150d68c4ba2 | S2.01_index_bar_record.md | APPROVED |
 | S2.02 | COMPLETE | 94b8f9884b1e479fcf05ddadb17913a09a488993 | S2.02_option_contract_record.md | APPROVED |
-| S2.03 | COMPLETE | f809ff44e0da4d869fcb3fc514713318d659a92b | S2.03_option_quote_record.md | PENDING |
+| S2.03 | COMPLETE | f809ff44e0da4d869fcb3fc514713318d659a92b | S2.03_option_quote_record.md | APPROVED |
+| S2.03A | COMPLETE | a3a3fe150e7ed26b496bf0e6c19177e2e5eb5648 | S2.03A_provider_neutral_adapter_contract.md | PENDING |
