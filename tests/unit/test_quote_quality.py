@@ -49,10 +49,6 @@ def test_quote_quality_001_public_api_exists() -> None:
     assert asof.classify_quote_quality is classify_quote_quality
 
 
-def test_quote_quality_002_no_asof_selector_yet() -> None:
-    assert not hasattr(asof, "select_asof_quote")
-
-
 def test_quote_quality_003_age_zero() -> None:
     assert quote_age_seconds(DECISION_TS, DECISION_TS) == 0.0
 
