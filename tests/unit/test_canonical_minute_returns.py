@@ -504,6 +504,40 @@ def test_cmr_048_interior_return_uses_consecutive_closes() -> None:
     )
 
 
+def test_s208r_later_return_ignores_current_bar_open() -> None:
+    baseline_bars = _bars()
+    baseline_state = _state(baseline_bars)
+    baseline_returns = _build(baseline_bars, state=baseline_state)
+    index = 123
+    previous_close = baseline_bars[index - 1].close
+    current_close = baseline_bars[index].close
+    mutated_open = previous_close + Decimal("100")
+
+    mutated_bars = list(baseline_bars)
+    mutated_bars[index] = _replace_bar(
+        baseline_bars[index],
+        open=mutated_open,
+        high=max(mutated_open, current_close) + Decimal("1"),
+        low=min(mutated_open, current_close) - Decimal("1"),
+    )
+    mutated_returns = _build(mutated_bars, state=baseline_state)
+    expected = math.log(float(current_close) / float(previous_close))
+    wrong_current_open_result = math.log(
+        float(current_close) / float(mutated_open)
+    )
+
+    assert mutated_bars[index].open != mutated_bars[index - 1].close
+    assert mutated_bars[index].close == current_close
+    assert mutated_returns[index] == pytest.approx(expected, abs=1e-15)
+    assert not math.isclose(
+        mutated_returns[index],
+        wrong_current_open_result,
+        rel_tol=1e-15,
+        abs_tol=1e-15,
+    )
+    assert mutated_returns == baseline_returns
+
+
 def test_cmr_049_final_return_ends_at_1330() -> None:
     bars = _bars()
     assert bars[-1].bar_end_ts_utc == decision_ts_utc(SUMMER_DATE)
