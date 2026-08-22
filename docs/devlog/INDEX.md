@@ -29,4 +29,5 @@
 | S2.05A | COMPLETE | 8cde56acc577e65e8d16f57f59368f8e94668863 | S2.05A_decision_option_snapshot_builder.md | REJECTED |
 | S2.05AR | COMPLETE | fd7140339b5bf8d8c2a3e92f060e10fcc6083f27 | S2.05AR_decision_snapshot_missing_path_test_coverage_repair.md | APPROVED |
 | S2.06 | COMPLETE | 0f6512d061e21b8b5162b9aad833cc173fdd6e32 | S2.06_trading_session_fomc_calendar_engine.md | REJECTED |
-| S2.06R | COMPLETE | 26c652fd0d24b4ad1a19add4b7d3d5e076d11057 | S2.06R_calendar_engine_acceptance_test_coverage_repair.md | PENDING |
+| S2.06R | COMPLETE | 26c652fd0d24b4ad1a19add4b7d3d5e076d11057 | S2.06R_calendar_engine_acceptance_test_coverage_repair.md | APPROVED |
+| S2.07 | COMPLETE | 520f1050761e660962fea48c8cf75f82a397e346 | S2.07_spx_session_state.md | PENDING |
