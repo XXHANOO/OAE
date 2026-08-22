@@ -274,6 +274,15 @@ def test_spxs_011_open_not_before_close_rejected() -> None:
         )
 
 
+def test_s207r_spxs_011_equal_session_open_and_close_rejected() -> None:
+    same = _market_timestamp(SESSION_DATE, 9, 30)
+    with pytest.raises(ValidationError, match="must precede"):
+        _record(
+            session_open_ts_utc=same,
+            session_close_ts_utc=same,
+        )
+
+
 def test_spxs_012_open_et_date_mismatch_rejected() -> None:
     with pytest.raises(ValidationError, match="open_ts_utc ET date"):
         _record(session_open_ts_utc=_market_timestamp(PREVIOUS_DATE, 9, 30))
@@ -421,6 +430,12 @@ def test_spxs_034_off_grid_active_window_bar_raises() -> None:
         _state(_bars() + [_bar(start)])
 
 
+def test_s207r_opening_boundary_straddling_off_grid_bar_raises() -> None:
+    start = session_open_ts_utc(SESSION_DATE) - timedelta(seconds=30)
+    with pytest.raises(SPXSessionStateIntegrityError, match="off-grid"):
+        _state(_bars() + [_bar(start)])
+
+
 def test_spxs_035_reversed_complete_input_produces_same_state() -> None:
     bars = _bars()
     assert _state(list(reversed(bars))) == _state(bars)
@@ -547,6 +562,19 @@ def test_spxs_054_future_different_source_does_not_raise() -> None:
 def test_spxs_055_future_duplicates_do_not_affect_state() -> None:
     future = _future_bar()
     assert _state(_bars() + [future, future]) == _state()
+
+
+def test_s207r_decision_boundary_incomplete_off_grid_bar_is_nonobservable() -> None:
+    incomplete = _bar(
+        decision_ts_utc(SESSION_DATE) - timedelta(seconds=30),
+        open_px=Decimal("700000"),
+        high=Decimal("999999"),
+        low=Decimal("1"),
+        close=Decimal("888888"),
+        source="FUTURE_PROVIDER",
+        quality_status=QualityStatus.STALE,
+    )
+    assert _state(_bars() + [incomplete]) == _state()
 
 
 def test_spxs_056_pre_open_extremes_do_not_affect_range() -> None:

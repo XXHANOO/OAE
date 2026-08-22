@@ -58,7 +58,7 @@ def build_spx_session_state(
     for bar in bars:
         if bar.session_date_et != session.session_date_et:
             continue
-        if bar.bar_start_ts_utc < canonical_open:
+        if bar.bar_end_ts_utc <= canonical_open:
             continue
         if bar.bar_end_ts_utc > decision:
             continue
