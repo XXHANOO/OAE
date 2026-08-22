@@ -31,4 +31,5 @@
 | S2.06 | COMPLETE | 0f6512d061e21b8b5162b9aad833cc173fdd6e32 | S2.06_trading_session_fomc_calendar_engine.md | REJECTED |
 | S2.06R | COMPLETE | 26c652fd0d24b4ad1a19add4b7d3d5e076d11057 | S2.06R_calendar_engine_acceptance_test_coverage_repair.md | APPROVED |
 | S2.07 | COMPLETE | 520f1050761e660962fea48c8cf75f82a397e346 | S2.07_spx_session_state.md | REJECTED |
-| S2.07R | COMPLETE | ed64fa682eddc234d8764fb71721b76686494027 | S2.07R_spx_session_state_active_window_integrity_repair.md | PENDING |
+| S2.07R | COMPLETE | ed64fa682eddc234d8764fb71721b76686494027 | S2.07R_spx_session_state_active_window_integrity_repair.md | APPROVED |
+| S2.08 | COMPLETE | d6882174b81108cbe618013f7534a6aedb66252f | S2.08_canonical_minute_return_series.md | PENDING |
