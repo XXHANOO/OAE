@@ -267,6 +267,7 @@ def test_x9_001_to_007_public_api_and_return_contract() -> None:
     assert option_features.__all__ == (
         "OptionFeatureIntegrityError",
         "compute_x9_normalized_0dte_atm_straddle",
+        "compute_x10_price_based_downside_skew",
     )
     value = compute_x9_normalized_0dte_atm_straddle(
         _dataset(),
@@ -773,7 +774,6 @@ def test_x9_069_to_073_structural_selector_errors_propagate(
 
 def test_x9_074_to_080_no_premature_surface_and_inputs_are_not_mutated() -> None:
     forbidden = {
-        "compute_x10",
         "compute_x11",
         "select_next_expiry",
         "FeatureVector",
