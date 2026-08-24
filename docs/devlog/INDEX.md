@@ -38,4 +38,5 @@
 | S2.09 | COMPLETE | 6dfb9e8e6a4c506b9cfdd4ac43b74c19a8c66ef7 | S2.09_spx_price_features_x1_x4.md | APPROVED |
 | S2.10 | COMPLETE | 62a3bfc5895cf62bb87d8741b27c4d9c77523859 | S2.10_spx_price_features_x5_x8.md | APPROVED |
 | S2.11 | COMPLETE | 2bbea209e08ba62b0897f17ba6b1339de5bb0715 | S2.11_option_chain_decision_snapshot_foundation.md | APPROVED |
-| S2.12 | COMPLETE | 55aae0b252d7609f0658dc85bc8593909b8a9e75 | S2.12_deterministic_spx_atm_call_put_pair_selector.md | PENDING |
+| S2.12 | COMPLETE | 55aae0b252d7609f0658dc85bc8593909b8a9e75 | S2.12_deterministic_spx_atm_call_put_pair_selector.md | APPROVED |
+| S2.13 | COMPLETE | 677ac61e16e173a7941cd4ca3be3b541f82be841 | S2.13_frozen_x9_normalized_0dte_atm_straddle.md | PENDING |
