@@ -33,4 +33,5 @@
 | S2.07 | COMPLETE | 520f1050761e660962fea48c8cf75f82a397e346 | S2.07_spx_session_state.md | REJECTED |
 | S2.07R | COMPLETE | ed64fa682eddc234d8764fb71721b76686494027 | S2.07R_spx_session_state_active_window_integrity_repair.md | APPROVED |
 | S2.08 | COMPLETE | d6882174b81108cbe618013f7534a6aedb66252f | S2.08_canonical_minute_return_series.md | REJECTED |
-| S2.08R | COMPLETE | 2b9345e4884b80bffc344944af09d025ca093548 | S2.08R_canonical_minute_return_mutant_resistance_test_repair.md | PENDING |
+| S2.08R | COMPLETE | 2b9345e4884b80bffc344944af09d025ca093548 | S2.08R_canonical_minute_return_mutant_resistance_test_repair.md | APPROVED |
+| S2.08A | COMPLETE | e504a312c13031a296baa783f8f2e4822e4ef5ef | S2.08A_pit_decision_session_dataset.md | PENDING |
