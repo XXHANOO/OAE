@@ -35,4 +35,5 @@
 | S2.08 | COMPLETE | d6882174b81108cbe618013f7534a6aedb66252f | S2.08_canonical_minute_return_series.md | REJECTED |
 | S2.08R | COMPLETE | 2b9345e4884b80bffc344944af09d025ca093548 | S2.08R_canonical_minute_return_mutant_resistance_test_repair.md | APPROVED |
 | S2.08A | COMPLETE | e504a312c13031a296baa783f8f2e4822e4ef5ef | S2.08A_pit_decision_session_dataset.md | APPROVED |
-| S2.09 | COMPLETE | 6dfb9e8e6a4c506b9cfdd4ac43b74c19a8c66ef7 | S2.09_spx_price_features_x1_x4.md | PENDING |
+| S2.09 | COMPLETE | 6dfb9e8e6a4c506b9cfdd4ac43b74c19a8c66ef7 | S2.09_spx_price_features_x1_x4.md | APPROVED |
+| S2.10 | COMPLETE | 62a3bfc5895cf62bb87d8741b27c4d9c77523859 | S2.10_spx_price_features_x5_x8.md | PENDING |
