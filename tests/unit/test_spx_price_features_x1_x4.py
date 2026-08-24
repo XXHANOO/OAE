@@ -180,6 +180,7 @@ def test_pfx_002_to_003_public_api_and_signature_are_exact() -> None:
     assert features_module.__all__ == (
         "SPXPriceFeatureIntegrityError",
         "compute_spx_price_features_x1_x4",
+        "compute_spx_price_features_x5_x8",
     )
 
 
@@ -505,7 +506,7 @@ def test_pfx_041_to_045_no_scope_leak_or_alternate_input_boundary() -> None:
     ).parameters
     assert not any(
         f"x{index}" in name
-        for index in range(5, 12)
+        for index in range(9, 12)
         for name in public_names
     )
     assert list(parameters) == ["dataset"]
